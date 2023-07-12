@@ -11,8 +11,6 @@ class Post(models.Model):
     def __str__(self):
         return self.title
     
-    class Meta:
-        db_table="posts"
-        ordering = ['-published_at']
+
 
 # Create your models here.
