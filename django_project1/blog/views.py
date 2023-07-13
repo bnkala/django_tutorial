@@ -1,28 +1,22 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post 
+from .forms import PostForm
 #from django.http import HttpResponse
 
-'''posts= [
-    {
-        'title':'Beautiful is better than ugly',
-        'author':'John Doe',
-        'content': 'Beautiful is better than ugly',
-        'published_at': 'October 1, 2022'
-    },
-    {
-        'title':'Explicit is better than implicit',
-        'author': 'Jane Doe',
-        'content': 'Explicit is better than implicit',
-        'published_at': 'October 1, 2022'
-    }
-]'''
+
+def create_post(request):
+    if request.method == 'GET':
+        context = {'form': PostForm()}
+        return render(request, 'blog/post_form.html', context)
+    elif request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('posts')
+        else: 
+            return render(request, 'blog/post_form.html', {'form':form})
 
 def home(request):
-    #return HttpResponse('<h1>Blog Home</h1>')
-    #context = {
-     #   'posts': posts,
-    #    'title': 'Zen of Python'
-    #}
     posts = Post.objects.all()
     context ={'posts':posts}
     return render(request,'blog/home.html', context)
