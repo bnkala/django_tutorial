@@ -35,6 +35,17 @@ def create_post(request):
             messages.error(request, 'Please correct the following orders')
             return render(request, 'blog/post_form.html', {'form':form})
 
+def delete_post(request, id):
+    post = get_object_or_404(Post, pk=id)
+    context = {'post':post}
+
+    if request.method =='GET':
+        return render(request, 'blog/post_confirm_delete.html',context)
+    elif request.method == 'POST':
+        post.delete()
+        messages.success(request, 'The post has been been deleted successfully')
+        return redirect('posts')
+
 def home(request):
     posts = Post.objects.all()
     context ={'posts':posts}
