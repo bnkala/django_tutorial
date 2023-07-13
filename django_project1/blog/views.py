@@ -1,7 +1,8 @@
 from django.shortcuts import render
+from .models import Post 
 #from django.http import HttpResponse
 
-posts= [
+'''posts= [
     {
         'title':'Beautiful is better than ugly',
         'author':'John Doe',
@@ -14,14 +15,16 @@ posts= [
         'content': 'Explicit is better than implicit',
         'published_at': 'October 1, 2022'
     }
-]
+]'''
 
 def home(request):
     #return HttpResponse('<h1>Blog Home</h1>')
-    context = {
-        'posts': posts,
-        'title': 'Zen of Python'
-    }
+    #context = {
+     #   'posts': posts,
+    #    'title': 'Zen of Python'
+    #}
+    posts = Post.objects.all()
+    context ={'posts':posts}
     return render(request,'blog/home.html', context)
 
 def about(request):
