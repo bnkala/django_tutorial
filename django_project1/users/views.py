@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from .forms import LoginForm
 # Create your views here.
 
 def sign_in(request):
     if request.method =='GET':
+        if request.user.is_authenticated:
+            return redirect('posts')
+        
         form = LoginForm()
         return render(request, 'users/login.html',{'form': form})
     elif request.method =='POST':
@@ -21,4 +24,10 @@ def sign_in(request):
                 return redirect('posts')
 
         messages.error(request, f'Invalid username or password')
-        return render(request,'users/login.html',{'form':form})    
+        return render(request,'users/login.html',{'form':form}) 
+
+
+def sign_out(request):
+    logout(request)
+    messages.success(request,f'You have been logged out.')
+    return redirect('login')   

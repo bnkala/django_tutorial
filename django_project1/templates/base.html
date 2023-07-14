@@ -7,8 +7,18 @@
         <title>{% if title %} {{title}} {% else %} Blog {% endif %} </title>
         <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
         <script src="{% static 'js/app.js' %}" defer></script>
+        <title>My Site</title>
     </head>
     <body>
+        <header>
+            {% if request.user.is_authenticated %}
+                <span>Hi {{ reques.user.username}}</span>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </header>
+        <main>
         {% if messages %}
             <div class="messages">
                 {% for message in messages %}
@@ -21,5 +31,6 @@
 
         {% block content %}
         {% endblock %}
+        </main>
     </body>
 </html>
